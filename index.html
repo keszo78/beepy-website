@@ -1,351 +1,415 @@
 <!DOCTYPE html>
-<html lang="hu">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Beepy — Szeretteim, biztonságban</title>
-<meta name="description" content="Beepy — GPS követés gyerekeknek, időseknek és kisállatoknak. Valós idejű térkép, geofence riasztás, és egy gombnyomás ha haza kell hívni őket.">
+<title>Beepy — Loved ones, safe.</title>
+<meta name="description" content="Beepy — GPS tracking for children, elderly, and pets. Real-time map, geofence alerts, and one button to call them home.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Nunito:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
-  --cream: #f5f0e8; --cream-2: #ede8df; --cream-3: #ddd7cc;
-  --blue: #6b9bc3; --blue-dark: #4a7ba8; --blue-light: #d4e6f5; --blue-pale: #eaf3fb;
-  --navy: #1c2e40; --navy-soft: #2d4459;
-  --text: #2a2a2a; --text-mid: #555; --text-soft: #888; --white: #ffffff;
-  --font-d: 'Playfair Display', Georgia, serif;
-  --font-b: 'Plus Jakarta Sans', sans-serif;
-  --r: 16px; --rl: 24px;
+  --cream: #f9f6f0; --cream-2: #f2ede4; --cream-3: #e8e1d6;
+  --blue: #5b8fb9; --blue-light: #7aadd4; --blue-dim: #4a7a9b;
+  --blue-pale: #deeaf4; --blue-glow: rgba(91,143,185,0.12);
+  --ink: #2c3341; --ink-2: #4a5568; --ink-3: #718096; --ink-4: #a0aec0;
+  --white: #ffffff;
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'Nunito', sans-serif;
+  --radius-md: 14px; --radius-lg: 22px; --radius-xl: 32px;
+  --shadow-soft: 0 4px 24px rgba(91,143,185,0.10);
+  --shadow-card: 0 2px 16px rgba(44,51,65,0.08);
 }
 html { scroll-behavior: smooth; }
-body { font-family: var(--font-b); background: var(--cream); color: var(--text); overflow-x: hidden; line-height: 1.65; }
+body { font-family: var(--font-body); background: var(--cream); color: var(--ink); overflow-x: hidden; line-height: 1.65; }
 
+/* NAV */
 nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
   display: flex; align-items: center; justify-content: space-between;
   padding: 1.1rem 2.5rem;
-  background: rgba(245,240,232,0.93); backdrop-filter: blur(16px);
+  background: rgba(249,246,240,0.92); backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--cream-3);
 }
-.nav-logo { font-family: var(--font-d); font-weight: 700; font-size: 1.5rem; color: var(--navy); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; }
-.nav-dot { width: 9px; height: 9px; background: var(--blue); border-radius: 50%; animation: pd 2.5s ease-in-out infinite; }
-@keyframes pd { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.75)} }
-.nav-links { display: flex; gap: 2rem; list-style: none; }
-.nav-links a { font-size: .88rem; font-weight: 500; color: var(--text-mid); text-decoration: none; transition: color .2s; }
-.nav-links a:hover { color: var(--blue-dark); }
-.nav-cta { background: var(--blue); color: var(--white); border: none; padding: .65rem 1.5rem; border-radius: 100px; font-family: var(--font-b); font-weight: 600; font-size: .88rem; cursor: pointer; text-decoration: none; transition: background .2s, transform .15s; box-shadow: 0 2px 12px rgba(107,155,195,.3); }
-.nav-cta:hover { background: var(--blue-dark); transform: translateY(-1px); }
+.nav-logo {
+  font-family: var(--font-display); font-weight: 700; font-size: 1.5rem;
+  color: var(--ink); text-decoration: none; display: flex; align-items: center; gap: 0.55rem;
+}
+.nav-logo-dot {
+  width: 9px; height: 9px; background: var(--blue); border-radius: 50%;
+  animation: pulse-dot 2.4s ease-in-out infinite;
+}
+@keyframes pulse-dot {
+  0%,100% { opacity:1; transform:scale(1); } 50% { opacity:0.7; transform:scale(0.85); }
+}
+.nav-right { display: flex; align-items: center; gap: 1.25rem; }
+.nav-links { display: flex; align-items: center; gap: 2rem; list-style: none; }
+.nav-links a { color: var(--ink-2); text-decoration: none; font-size: 0.92rem; font-weight: 500; transition: color 0.2s; }
+.nav-links a:hover { color: var(--blue); }
+.lang-switch {
+  display: flex; align-items: center; gap: 0.25rem;
+  background: var(--cream-2); border: 1px solid var(--cream-3);
+  border-radius: 100px; padding: 0.25rem 0.35rem;
+}
+.lang-btn {
+  background: none; border: none; cursor: pointer;
+  font-family: var(--font-body); font-size: 0.78rem; font-weight: 600;
+  color: var(--ink-3); padding: 0.25rem 0.6rem; border-radius: 100px;
+  transition: all 0.2s; letter-spacing: 0.03em;
+}
+.lang-btn.active { background: var(--white); color: var(--blue); box-shadow: 0 1px 4px rgba(44,51,65,0.1); }
+.nav-cta {
+  background: var(--blue); color: var(--white); border: none;
+  padding: 0.65rem 1.5rem; border-radius: 100px;
+  font-family: var(--font-body); font-weight: 600; font-size: 0.92rem;
+  cursor: pointer; text-decoration: none;
+  transition: background 0.2s, transform 0.15s;
+  box-shadow: 0 2px 12px rgba(91,143,185,0.3);
+}
+.nav-cta:hover { background: var(--blue-dim); transform: translateY(-1px); }
 
-.hero { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 4rem; max-width: 1200px; margin: 0 auto; padding: 8rem 2.5rem 4rem; }
-.hero-badge { display: inline-flex; align-items: center; gap: .5rem; background: var(--blue-pale); border: 1px solid var(--blue-light); padding: .4rem 1rem; border-radius: 100px; font-size: .78rem; color: var(--blue-dark); margin-bottom: 1.75rem; letter-spacing: .06em; text-transform: uppercase; font-weight: 600; }
-.hero h1 { font-family: var(--font-d); font-weight: 800; font-size: clamp(2.6rem,5vw,4rem); line-height: 1.1; letter-spacing: -.02em; color: var(--navy); margin-bottom: 1.5rem; }
+/* HERO */
+.hero {
+  position: relative; min-height: 100vh;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; padding: 9rem 1.5rem 5rem; overflow: hidden;
+  background: linear-gradient(170deg, var(--cream) 60%, var(--blue-pale) 100%);
+}
+.hero-blob { position: absolute; top: -10%; right: -15%; width: 600px; height: 600px; background: radial-gradient(circle, rgba(91,143,185,0.08) 0%, transparent 65%); pointer-events: none; border-radius: 50%; }
+.hero-blob-2 { position: absolute; bottom: 5%; left: -10%; width: 400px; height: 400px; background: radial-gradient(circle, rgba(91,143,185,0.06) 0%, transparent 65%); pointer-events: none; border-radius: 50%; }
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  background: var(--blue-pale); border: 1px solid rgba(91,143,185,0.25);
+  padding: 0.45rem 1.1rem; border-radius: 100px;
+  font-size: 0.8rem; color: var(--blue-dim); margin-bottom: 2.25rem;
+  letter-spacing: 0.04em; font-weight: 600;
+}
+.hero h1 {
+  font-family: var(--font-display); font-weight: 700;
+  font-size: clamp(3rem, 7vw, 5.5rem); line-height: 1.08;
+  letter-spacing: -0.02em; margin-bottom: 1.5rem; color: var(--ink); max-width: 820px;
+}
 .hero h1 em { font-style: italic; color: var(--blue); }
-.hero-sub { font-size: 1.05rem; color: var(--text-mid); max-width: 480px; margin-bottom: 2.5rem; line-height: 1.75; }
-.waitlist-wrap { display: flex; flex-direction: column; gap: .75rem; max-width: 420px; }
-.waitlist-row { display: flex; gap: .6rem; }
-.waitlist-input { flex: 1; background: var(--white); border: 1.5px solid var(--cream-3); color: var(--text); padding: .85rem 1.1rem; border-radius: 100px; font-family: var(--font-b); font-size: .92rem; outline: none; transition: border-color .2s, box-shadow .2s; }
-.waitlist-input::placeholder { color: var(--text-soft); }
-.waitlist-input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(107,155,195,.15); }
-.waitlist-btn { background: var(--blue); color: var(--white); border: none; padding: .85rem 1.5rem; border-radius: 100px; font-family: var(--font-b); font-weight: 600; font-size: .9rem; cursor: pointer; transition: background .2s, transform .15s; white-space: nowrap; box-shadow: 0 2px 12px rgba(107,155,195,.3); }
-.waitlist-btn:hover { background: var(--blue-dark); transform: translateY(-1px); }
-.waitlist-counter { font-size: .82rem; color: var(--text-soft); padding-left: .5rem; }
-.waitlist-counter strong { color: var(--blue-dark); }
-.success-msg { display: none; background: var(--blue-pale); border: 1px solid var(--blue-light); color: var(--blue-dark); padding: .85rem 1.25rem; border-radius: var(--r); font-size: .9rem; font-weight: 500; }
+.hero-sub {
+  font-size: clamp(1rem, 2vw, 1.18rem); color: var(--ink-2);
+  max-width: 600px; margin-bottom: 3rem; font-weight: 400; line-height: 1.75;
+}
+.waitlist-wrap { display: flex; flex-direction: column; align-items: center; gap: 1rem; width: 100%; max-width: 520px; }
+.waitlist-form { display: flex; gap: 0.7rem; width: 100%; flex-wrap: wrap; justify-content: center; }
+.waitlist-input {
+  flex: 1; min-width: 240px; background: var(--white);
+  border: 1.5px solid var(--cream-3); color: var(--ink);
+  padding: 0.9rem 1.25rem; border-radius: 100px;
+  font-family: var(--font-body); font-size: 0.95rem; outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s; box-shadow: var(--shadow-card);
+}
+.waitlist-input::placeholder { color: var(--ink-4); }
+.waitlist-input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(91,143,185,0.15); }
+.waitlist-btn {
+  background: var(--blue); color: var(--white); border: none;
+  padding: 0.9rem 1.8rem; border-radius: 100px;
+  font-family: var(--font-body); font-weight: 700; font-size: 0.95rem;
+  cursor: pointer; transition: background 0.2s, transform 0.15s;
+  box-shadow: 0 2px 14px rgba(91,143,185,0.35); white-space: nowrap;
+}
+.waitlist-btn:hover { background: var(--blue-dim); transform: translateY(-2px); }
+.waitlist-counter { font-size: 0.85rem; color: var(--ink-3); }
+.waitlist-counter strong { color: var(--blue); font-weight: 600; }
+.success-msg {
+  display: none; background: var(--blue-pale);
+  border: 1.5px solid rgba(91,143,185,0.3); color: var(--blue-dim);
+  padding: 0.9rem 1.6rem; border-radius: 100px;
+  font-size: 0.95rem; font-weight: 600; width: 100%; text-align: center;
+}
+.scroll-hint {
+  position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 0.4rem;
+  color: var(--ink-4); font-size: 0.72rem; letter-spacing: 0.1em;
+  text-transform: uppercase; font-weight: 600;
+  animation: float 2.5s ease-in-out infinite;
+}
+@keyframes float { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(7px); } }
 
-.hero-visual { position: relative; display: flex; justify-content: center; align-items: center; }
-.hero-phone { width: 280px; background: var(--white); border-radius: 32px; padding: 1.5rem; box-shadow: 0 32px 80px rgba(28,46,64,.12), 0 8px 24px rgba(28,46,64,.08); position: relative; z-index: 2; }
-.phone-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
-.phone-title { font-family: var(--font-d); font-weight: 700; font-size: 1rem; color: var(--navy); }
-.phone-status { display: flex; align-items: center; gap: .3rem; font-size: .72rem; color: #3a9c6e; font-weight: 600; background: #e8f7ef; padding: .2rem .6rem; border-radius: 100px; }
-.phone-status-dot { width: 6px; height: 6px; background: #3a9c6e; border-radius: 50%; animation: pd 1.8s ease-in-out infinite; }
-.phone-map { width: 100%; height: 180px; background: linear-gradient(145deg,#deeef7,#c8e0f0,#d4e8f5); border-radius: var(--r); position: relative; overflow: hidden; margin-bottom: 1rem; }
-.map-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(107,155,195,.15) 1px,transparent 1px),linear-gradient(90deg,rgba(107,155,195,.15) 1px,transparent 1px); background-size: 24px 24px; }
-.map-road-h { position: absolute; left: 0; right: 0; height: 8px; background: rgba(255,255,255,.6); border-radius: 4px; }
-.map-road-v { position: absolute; top: 0; bottom: 0; width: 8px; background: rgba(255,255,255,.6); border-radius: 4px; }
-.map-zone { position: absolute; width: 90px; height: 70px; background: rgba(107,155,195,.2); border: 2px dashed var(--blue); border-radius: 12px; top: 50%; left: 50%; transform: translate(-50%,-60%); }
-.map-pin { position: absolute; top: 50%; left: 50%; width: 24px; height: 24px; background: var(--blue); border-radius: 50% 50% 50% 0; transform: translate(-50%,-80%) rotate(-45deg); box-shadow: 0 4px 12px rgba(107,155,195,.5); }
-.map-pin::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 8px; height: 8px; background: white; border-radius: 50%; }
-.phone-alert { background: #fff8e6; border: 1px solid #f5d87a; border-radius: var(--r); padding: .65rem .85rem; display: flex; align-items: center; gap: .5rem; margin-bottom: .75rem; }
-.alert-text { font-size: .78rem; color: #6b4e00; font-weight: 500; line-height: 1.4; }
-.phone-btn { width: 100%; background: var(--blue); color: white; border: none; border-radius: 100px; padding: .7rem; font-family: var(--font-b); font-weight: 600; font-size: .82rem; cursor: default; }
-.float-card { position: absolute; background: var(--white); border-radius: var(--r); padding: .85rem 1rem; box-shadow: 0 8px 32px rgba(28,46,64,.1); font-size: .82rem; font-weight: 500; color: var(--navy); display: flex; align-items: center; gap: .5rem; white-space: nowrap; }
-.float-1 { top: 8%; right: -8%; }
-.float-2 { bottom: 12%; left: -10%; }
-
+/* SECTIONS */
 section { position: relative; }
-.section-inner { max-width: 1100px; margin: 0 auto; padding: 5rem 2.5rem; }
-.section-tag { font-size: .75rem; letter-spacing: .12em; text-transform: uppercase; color: var(--blue-dark); font-weight: 600; margin-bottom: .85rem; }
-.section-title { font-family: var(--font-d); font-weight: 700; font-size: clamp(1.9rem,4vw,2.8rem); letter-spacing: -.02em; line-height: 1.15; color: var(--navy); margin-bottom: 1rem; }
-.section-title em { font-style: italic; color: var(--blue); }
-.section-sub { color: var(--text-mid); font-size: 1rem; max-width: 520px; line-height: 1.75; }
+.section-inner { max-width: 1120px; margin: 0 auto; padding: 5.5rem 1.5rem; }
+.section-tag { font-size: 0.78rem; letter-spacing: 0.13em; text-transform: uppercase; color: var(--blue); font-weight: 700; margin-bottom: 0.85rem; display: block; }
+.section-title { font-family: var(--font-display); font-weight: 700; font-size: clamp(1.9rem, 4vw, 3rem); letter-spacing: -0.02em; line-height: 1.18; margin-bottom: 1.1rem; color: var(--ink); }
+.section-sub { color: var(--ink-2); font-size: 1.05rem; max-width: 560px; line-height: 1.75; }
+.divider { height: 1px; background: linear-gradient(90deg, transparent, var(--cream-3), transparent); margin: 0 auto; max-width: 800px; }
 
+/* WHO */
 .who-section { background: var(--white); }
-.who-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2rem; margin-top: 3.5rem; }
-.who-card { background: var(--cream); border: 1px solid var(--cream-3); border-radius: var(--rl); overflow: hidden; transition: transform .3s, box-shadow .3s; }
-.who-card:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(28,46,64,.1); }
-.who-img-placeholder { width: 100%; height: 200px; background: linear-gradient(135deg,var(--blue-pale),var(--blue-light)); display: flex; align-items: center; justify-content: center; font-size: 3.5rem; }
-.who-body { padding: 1.5rem; }
-.who-card h3 { font-family: var(--font-d); font-weight: 700; font-size: 1.2rem; color: var(--navy); margin-bottom: .6rem; }
-.who-card p { color: var(--text-mid); font-size: .92rem; line-height: 1.7; }
+.who-intro { display: flex; justify-content: space-between; align-items: flex-end; gap: 2rem; margin-bottom: 3.5rem; flex-wrap: wrap; }
+.who-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.75rem; }
+.who-card { background: var(--cream); border: 1px solid var(--cream-3); border-radius: var(--radius-lg); overflow: hidden; transition: transform 0.3s, box-shadow 0.3s; }
+.who-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-soft); }
+.who-card-img { width: 100%; height: 220px; object-fit: cover; display: block; }
+.who-card-body { padding: 1.75rem; }
+.who-card-tag { display: inline-block; background: var(--blue-pale); color: var(--blue-dim); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.3rem 0.8rem; border-radius: 100px; margin-bottom: 0.85rem; }
+.who-card h3 { font-family: var(--font-display); font-weight: 600; font-size: 1.3rem; margin-bottom: 0.6rem; color: var(--ink); }
+.who-card p { color: var(--ink-2); font-size: 0.93rem; line-height: 1.68; }
+.who-card-cta { display: inline-flex; align-items: center; gap: 0.4rem; margin-top: 1.1rem; color: var(--blue); font-size: 0.88rem; font-weight: 600; text-decoration: none; transition: gap 0.2s; }
+.who-card-cta:hover { gap: 0.65rem; }
 
+/* HOW */
 .how-section { background: var(--cream); }
-.how-steps { display: grid; grid-template-columns: repeat(3,1fr); gap: 3rem; margin-top: 3.5rem; position: relative; }
-.how-steps::before { content: ''; position: absolute; top: 28px; left: calc(16.66% + 1.5rem); right: calc(16.66% + 1.5rem); height: 1px; background: linear-gradient(90deg,var(--blue-light),var(--blue),var(--blue-light)); }
-.how-step { text-align: center; }
-.step-num { width: 56px; height: 56px; border-radius: 50%; background: var(--white); border: 2px solid var(--blue-light); display: flex; align-items: center; justify-content: center; font-family: var(--font-d); font-weight: 700; font-size: 1.1rem; color: var(--blue); margin: 0 auto 1.25rem; position: relative; z-index: 1; box-shadow: 0 4px 16px rgba(107,155,195,.2); }
-.how-step h3 { font-family: var(--font-d); font-weight: 700; font-size: 1.05rem; color: var(--navy); margin-bottom: .5rem; }
-.how-step p { color: var(--text-mid); font-size: .9rem; line-height: 1.7; }
+.how-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1px; margin-top: 3.5rem; background: var(--cream-3); border-radius: var(--radius-lg); overflow: hidden; }
+.how-step { background: var(--white); padding: 2.25rem; transition: background 0.2s; }
+.how-step:hover { background: var(--cream); }
+.step-num { width: 44px; height: 44px; border-radius: var(--radius-md); background: var(--blue-pale); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; color: var(--blue); margin-bottom: 1.25rem; }
+.how-step h3 { font-family: var(--font-display); font-weight: 600; font-size: 1.1rem; margin-bottom: 0.5rem; color: var(--ink); }
+.how-step p { color: var(--ink-2); font-size: 0.9rem; line-height: 1.65; }
 
+/* FEATURES */
 .features-section { background: var(--white); }
-.features-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; margin-top: 3.5rem; }
-.feature-item { background: var(--cream); border: 1px solid var(--cream-3); border-radius: var(--r); padding: 1.75rem; transition: border-color .2s, box-shadow .2s; }
-.feature-item:hover { border-color: var(--blue-light); box-shadow: 0 8px 32px rgba(107,155,195,.12); }
-.feature-icon-wrap { width: 56px; height: 56px; background: var(--blue-pale); border-radius: var(--r); display: flex; align-items: center; justify-content: center; font-size: 1.6rem; margin-bottom: 1.1rem; border: 1px solid var(--blue-light); }
-.feature-item h3 { font-family: var(--font-d); font-weight: 700; font-size: 1rem; color: var(--navy); margin-bottom: .4rem; }
-.feature-item p { color: var(--text-mid); font-size: .88rem; line-height: 1.65; }
+.features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); gap: 1.25rem; margin-top: 3.5rem; }
+.feature-item { background: var(--cream); border: 1px solid var(--cream-3); border-radius: var(--radius-lg); padding: 1.75rem; display: flex; gap: 1.1rem; align-items: flex-start; transition: border-color 0.2s, box-shadow 0.2s; }
+.feature-item:hover { border-color: rgba(91,143,185,0.3); box-shadow: var(--shadow-soft); }
+.feature-icon-wrap { width: 48px; height: 48px; min-width: 48px; border-radius: var(--radius-md); background: var(--blue-pale); display: flex; align-items: center; justify-content: center; font-size: 1.35rem; }
+.feature-item h3 { font-family: var(--font-display); font-weight: 600; font-size: 1rem; margin-bottom: 0.35rem; color: var(--ink); }
+.feature-item p { color: var(--ink-2); font-size: 0.88rem; line-height: 1.62; }
 
+/* PRICING */
 .pricing-section { background: var(--cream); }
-.pricing-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 1.5rem; margin-top: 3.5rem; max-width: 780px; }
-.pricing-card { background: var(--white); border: 1.5px solid var(--cream-3); border-radius: var(--rl); padding: 2rem; position: relative; }
-.pricing-card.featured { border-color: var(--blue); box-shadow: 0 8px 40px rgba(107,155,195,.2); }
-.pricing-badge { position: absolute; top: -13px; left: 50%; transform: translateX(-50%); background: var(--blue); color: var(--white); font-size: .72rem; font-weight: 700; padding: .25rem 1rem; border-radius: 100px; white-space: nowrap; letter-spacing: .05em; text-transform: uppercase; }
-.pricing-name { font-family: var(--font-d); font-weight: 700; font-size: 1.2rem; color: var(--navy); margin-bottom: .5rem; }
-.pricing-price { font-family: var(--font-d); font-weight: 800; font-size: 2.8rem; letter-spacing: -.03em; line-height: 1; color: var(--navy); margin-bottom: .25rem; }
-.pricing-price span { font-size: .95rem; font-weight: 400; color: var(--text-soft); font-family: var(--font-b); letter-spacing: 0; }
-.pricing-annual { font-size: .82rem; color: var(--blue-dark); font-weight: 600; margin-bottom: 1rem; background: var(--blue-pale); display: inline-block; padding: .2rem .7rem; border-radius: 100px; }
-.pricing-desc { color: var(--text-mid); font-size: .88rem; margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--cream-3); line-height: 1.65; }
-.pricing-features { list-style: none; display: flex; flex-direction: column; gap: .7rem; }
-.pricing-features li { font-size: .9rem; color: var(--text-mid); display: flex; align-items: flex-start; gap: .65rem; }
-.pricing-features li::before { content: ''; display: block; width: 18px; height: 18px; min-width: 18px; margin-top: 1px; background: var(--blue-pale) url("data:image/svg+xml,%3Csvg width='10' height='8' viewBox='0 0 10 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 4L3.5 6.5L9 1' stroke='%234a7ba8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat center; border: 1px solid var(--blue-light); border-radius: 50%; }
+.pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 3.5rem; max-width: 900px; }
+.pricing-card { background: var(--white); border: 1.5px solid var(--cream-3); border-radius: var(--radius-xl); padding: 2.25rem; position: relative; box-shadow: var(--shadow-card); transition: transform 0.2s, box-shadow 0.2s; }
+.pricing-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-soft); }
+.pricing-card.featured { border-color: var(--blue); background: linear-gradient(160deg, var(--white) 70%, var(--blue-pale) 100%); }
+.pricing-badge { position: absolute; top: -13px; left: 2rem; background: var(--blue); color: var(--white); font-size: 0.73rem; font-weight: 700; padding: 0.28rem 0.9rem; border-radius: 100px; letter-spacing: 0.05em; text-transform: uppercase; }
+.pricing-name { font-family: var(--font-display); font-weight: 600; font-size: 1.2rem; margin-bottom: 1rem; color: var(--ink); }
+.pricing-price { font-family: var(--font-display); font-weight: 700; font-size: 2.8rem; letter-spacing: -0.03em; line-height: 1; color: var(--ink); margin-bottom: 0.2rem; }
+.pricing-price sup { font-size: 1.3rem; vertical-align: super; font-weight: 500; }
+.pricing-price span { font-size: 0.95rem; font-weight: 400; color: var(--ink-3); font-family: var(--font-body); }
+.pricing-annual { font-size: 0.83rem; color: var(--blue-dim); font-weight: 600; margin-bottom: 1.25rem; background: var(--blue-pale); display: inline-block; padding: 0.25rem 0.75rem; border-radius: 100px; }
+.pricing-desc { color: var(--ink-2); font-size: 0.9rem; margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--cream-3); line-height: 1.6; }
+.pricing-features { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
+.pricing-features li { font-size: 0.91rem; color: var(--ink-2); display: flex; align-items: flex-start; gap: 0.65rem; }
+.pricing-check { width: 18px; height: 18px; min-width: 18px; border-radius: 50%; background: var(--blue-pale); border: 1.5px solid rgba(91,143,185,0.35); display: flex; align-items: center; justify-content: center; margin-top: 1px; }
+.pricing-check::after { content: ''; display: block; width: 9px; height: 6px; border-left: 1.5px solid var(--blue); border-bottom: 1.5px solid var(--blue); transform: rotate(-45deg) translateY(-1px); }
+.pricing-note { margin-top: 2rem; color: var(--ink-3); font-size: 0.85rem; line-height: 1.6; }
 
-.trust-section { background: var(--navy); }
-.trust-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 2rem; text-align: center; }
-.trust-num { font-family: var(--font-d); font-weight: 800; font-size: 2.8rem; color: var(--blue-light); letter-spacing: -.03em; line-height: 1; margin-bottom: .5rem; }
-.trust-item p { color: rgba(255,255,255,.6); font-size: .88rem; line-height: 1.55; }
+/* TRUST */
+.trust-section { background: var(--white); }
+.trust-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2.5rem; margin-top: 3rem; text-align: center; }
+.trust-num { font-family: var(--font-display); font-weight: 700; font-size: 2.8rem; color: var(--blue); letter-spacing: -0.03em; line-height: 1; margin-bottom: 0.5rem; }
+.trust-item p { color: var(--ink-2); font-size: 0.9rem; line-height: 1.55; }
 
+/* CTA */
 .cta-section { background: var(--cream); }
-.cta-box { background: var(--white); border: 1.5px solid var(--blue-light); border-radius: var(--rl); padding: 4rem 3rem; max-width: 680px; margin: 0 auto; text-align: center; box-shadow: 0 16px 64px rgba(107,155,195,.12); }
-.cta-box h2 { font-family: var(--font-d); font-weight: 800; font-size: clamp(1.8rem,3.5vw,2.5rem); color: var(--navy); letter-spacing: -.02em; margin-bottom: 1rem; line-height: 1.15; }
-.cta-box p { color: var(--text-mid); font-size: 1rem; margin-bottom: 2.25rem; line-height: 1.7; }
-.cta-box p strong { color: var(--blue-dark); }
+.cta-box { background: linear-gradient(145deg, var(--blue-pale) 0%, var(--white) 60%); border: 1.5px solid rgba(91,143,185,0.2); border-radius: var(--radius-xl); padding: 4.5rem 2rem; max-width: 720px; margin: 0 auto; text-align: center; box-shadow: var(--shadow-soft); }
+.cta-box h2 { font-family: var(--font-display); font-weight: 700; font-size: clamp(1.9rem, 4vw, 2.8rem); letter-spacing: -0.02em; margin-bottom: 1rem; color: var(--ink); line-height: 1.15; }
+.cta-box p { color: var(--ink-2); font-size: 1rem; margin-bottom: 2.5rem; line-height: 1.7; }
+.cta-box p strong { color: var(--blue-dim); font-weight: 600; }
 
-footer { background: var(--navy); border-top: 1px solid rgba(255,255,255,.08); padding: 2rem 2.5rem; }
-.footer-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; color: rgba(255,255,255,.45); font-size: .85rem; }
-.footer-inner a { color: rgba(255,255,255,.45); text-decoration: none; transition: color .2s; }
-.footer-inner a:hover { color: var(--blue-light); }
-.footer-logo { font-family: var(--font-d); font-weight: 700; color: var(--white); font-size: 1.1rem; }
+/* FOOTER */
+footer { background: var(--ink); padding: 2.25rem 1.5rem; color: rgba(255,255,255,0.45); font-size: 0.85rem; }
+.footer-inner { max-width: 1120px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+.footer-logo { font-family: var(--font-display); font-weight: 600; font-size: 1.1rem; color: var(--white); text-decoration: none; }
+footer a { color: rgba(255,255,255,0.45); text-decoration: none; transition: color 0.2s; }
+footer a:hover { color: var(--blue-light); }
+.footer-links { display: flex; gap: 1.5rem; }
 
-.fade-up { opacity: 0; transform: translateY(20px); transition: opacity .65s ease, transform .65s ease; }
+/* ANIMATIONS */
+.fade-up { opacity: 0; transform: translateY(22px); transition: opacity 0.65s ease, transform 0.65s ease; }
 .fade-up.visible { opacity: 1; transform: translateY(0); }
+.fade-up-delay-1 { transition-delay: 0.1s; }
+.fade-up-delay-2 { transition-delay: 0.2s; }
+.fade-up-delay-3 { transition-delay: 0.3s; }
 
-@media (max-width: 900px) {
-  .hero { grid-template-columns: 1fr; padding-top: 6rem; }
-  .hero-visual { display: none; }
-  .who-grid, .how-steps, .features-grid { grid-template-columns: 1fr; }
-  .pricing-grid { grid-template-columns: 1fr; max-width: 400px; }
-  .trust-grid { grid-template-columns: repeat(2,1fr); }
-  .how-steps::before { display: none; }
-  nav { padding: 1rem 1.5rem; }
+/* MOBILE */
+@media (max-width: 680px) {
+  nav { padding: 1rem 1.25rem; }
   .nav-links { display: none; }
-  .section-inner { padding: 3.5rem 1.5rem; }
+  .hero h1 { font-size: 2.6rem; }
+  .waitlist-form { flex-direction: column; }
+  .waitlist-input { min-width: unset; }
+  .footer-inner { flex-direction: column; align-items: flex-start; }
+  .who-intro { flex-direction: column; }
 }
 </style>
 </head>
 <body>
 
 <nav>
-  <a href="#" class="nav-logo"><div class="nav-dot"></div>Beepy</a>
+  <a href="#" class="nav-logo"><div class="nav-logo-dot"></div>Beepy</a>
   <ul class="nav-links">
-    <li><a href="#segitseg">Hol segítünk</a></li>
-    <li><a href="#funkciok">Funkciók</a></li>
-    <li><a href="#arak">Árak</a></li>
+    <li><a href="#who" data-en="Who it's for" data-hu="Kinek való">Who it's for</a></li>
+    <li><a href="#how" data-en="How it works" data-hu="Hogyan működik">How it works</a></li>
+    <li><a href="#pricing" data-en="Pricing" data-hu="Árak">Pricing</a></li>
   </ul>
-  <a href="#waitlist" class="nav-cta">Csatlakozom</a>
+  <div class="nav-right">
+    <div class="lang-switch">
+      <button class="lang-btn active" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" onclick="setLang('hu')">HU</button>
+    </div>
+    <a href="#waitlist" class="nav-cta" data-en="Join waitlist" data-hu="Csatlakozom">Join waitlist</a>
+  </div>
 </nav>
 
-<section>
-  <div class="hero">
-    <div class="hero-left">
-      <div class="hero-badge"><div class="nav-dot"></div>Hamarosan érkezik · Légy az első</div>
-      <h1>Szeretteim —<br><em>biztonságban.</em></h1>
-      <p class="hero-sub">A Beepy egy apró GPS tracker és egy okos app, mely segít abban, hogy gyereked, nagyszülőd vagy kisállatod mindig biztonságban legyen — ne kelljen erre folyton figyelned, mi gondoskodunk helyetted.</p>
-      <div class="waitlist-wrap" id="waitlist">
-        <div class="waitlist-row">
-          <input type="email" class="waitlist-input" id="email-input" placeholder="email@cimed.hu" autocomplete="email"/>
-          <button class="waitlist-btn" onclick="handleSignup()">Feliratkozom</button>
-        </div>
-        <div class="success-msg" id="success-msg">✓ Feliratkoztál! Értesítünk az induláskor.</div>
-        <p class="waitlist-counter" id="counter">Már <strong>247</strong> ember csatlakozott — legyél te a következő</p>
-      </div>
+<section class="hero">
+  <div class="hero-blob"></div>
+  <div class="hero-blob-2"></div>
+  <div class="hero-badge">
+    <div class="nav-logo-dot"></div>
+    <span data-en="Coming soon · Be among the first" data-hu="Hamarosan érkezik · Légy az elsők között">Coming soon · Be among the first</span>
+  </div>
+  <h1 data-en="Loved ones —<br><em>safe.</em>" data-hu="Szeretteim —<br><em>biztonságban.</em>">Loved ones —<br><em>safe.</em></h1>
+  <p class="hero-sub" data-en="Beepy is a tiny GPS tracker and a smart app that makes sure your child, elderly relative, or pet is always safe — so you don't have to worry constantly. We take care of it for you." data-hu="A Beepy egy apró GPS tracker és egy okos app, mely segít neked abban, hogy gyereked, nagyszülőd vagy kisállatod mindig biztonságban legyen — hogy ne kelljen erre folyton figyelned, mi gondoskodunk helyetted.">Beepy is a tiny GPS tracker and a smart app that makes sure your child, elderly relative, or pet is always safe — so you don't have to worry constantly. We take care of it for you.</p>
+  <div class="waitlist-wrap" id="waitlist">
+    <div class="waitlist-form">
+      <input type="email" class="waitlist-input" id="email-input" placeholder="your@email.com" autocomplete="email"/>
+      <button class="waitlist-btn" onclick="handleSignup()" data-en="Join waitlist" data-hu="Feliratkozom">Join waitlist</button>
     </div>
-    <div class="hero-visual">
-      <div class="hero-phone">
-        <div class="phone-top">
-          <span class="phone-title">Beepy</span>
-          <div class="phone-status"><div class="phone-status-dot"></div>Élő követés</div>
-        </div>
-        <div class="phone-map">
-          <div class="map-grid"></div>
-          <div class="map-road-h" style="top:40%"></div>
-          <div class="map-road-h" style="top:72%"></div>
-          <div class="map-road-v" style="left:30%"></div>
-          <div class="map-road-v" style="left:68%"></div>
-          <div class="map-zone"></div>
-          <div class="map-pin"></div>
-        </div>
-        <div class="phone-alert">
-          <span style="font-size:1rem">📍</span>
-          <div class="alert-text">Peti a Játszótér zónában van · 3 perce frissítve</div>
-        </div>
-        <button class="phone-btn">📣 Gyere haza jelzés küldése</button>
-      </div>
-      <div class="float-card float-1">🔔 Kilépett a zónából!</div>
-      <div class="float-card float-2">🔋 2–4 hét üzemidő</div>
-    </div>
+    <div class="success-msg" id="success-msg" data-en="✓ You're in! We'll notify you at launch." data-hu="✓ Feliratkoztál! Értesítünk az induláskor.">✓ You're in! We'll notify you at launch.</div>
+    <p class="waitlist-counter" id="counter" data-en="Already <strong>247</strong> people waiting — join them" data-hu="Már <strong>247</strong> ember vár — legyél te a következő">Already <strong>247</strong> people waiting — join them</p>
+  </div>
+  <div class="scroll-hint">
+    <span data-en="Scroll" data-hu="Görgess">Scroll</span>
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2v10M2 7l5 5 5-5" stroke="#a0aec0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
   </div>
 </section>
 
-<section class="who-section" id="segitseg">
+<div class="divider"></div>
+
+<section class="who-section" id="who">
   <div class="section-inner">
-    <p class="section-tag fade-up">Hol segítünk?</p>
-    <h2 class="section-title fade-up">Van, akit nem hagyhatsz<br>magára — de nem lehetsz<br>mindig ott. <em>Beepy igen.</em></h2>
+    <div class="who-intro">
+      <div>
+        <span class="section-tag fade-up" data-en="Where we help" data-hu="Hol segítünk?">Where we help</span>
+        <h2 class="section-title fade-up" data-en="Someone you can't leave alone,<br>but can't always be there.<br><em>Beepy can.</em>" data-hu="Van, akit nem hagyhatsz magára,<br>de nem lehetsz mindig ott.<br><em>Beepy igen.</em>">Someone you can't leave alone,<br>but can't always be there.<br><em>Beepy can.</em></h2>
+      </div>
+      <p class="section-sub fade-up" data-en="Whether it's a curious toddler, a forgetful grandfather, or an adventurous dog — Beepy watches over them when you can't." data-hu="Legyen szó kíváncsi kisgyerekről, feledékeny nagypapáról vagy szökevény kutyáról — Beepy ott vigyáz, ahol te nem lehetsz.">Whether it's a curious toddler, a forgetful grandfather, or an adventurous dog — Beepy watches over them when you can't.</p>
+    </div>
     <div class="who-grid">
-      <div class="who-card fade-up">
-        <div class="who-img-placeholder">👧</div>
-        <div class="who-body">
-          <h3>Gyerekek</h3>
-          <p>4 éves kortól. Rajzolj zónát a játszótér köré, és azonnal értesítünk ha kikerül belőle. Egy gombnyomásra hazahívod — anélkül hogy telefonálnod kellene.</p>
+      <div class="who-card fade-up fade-up-delay-1">
+        <img src="https://images.pexels.com/photos/6209814/pexels-photo-6209814.jpeg?auto=compress&cs=tinysrgb&w=800&h=500&fit=crop" alt="Child playing outdoors" class="who-card-img" loading="lazy"/>
+        <div class="who-card-body">
+          <span class="who-card-tag" data-en="Children" data-hu="Gyerekek">Children</span>
+          <h3 data-en="From age 4" data-hu="4 éves kortól">From age 4</h3>
+          <p data-en="Draw a zone around the playground and get notified immediately if they leave. One button brings them home — no phone call needed." data-hu="Rajzolj zónát a játszótér köré, és azonnal kapsz értesítést ha kikerül belőle. Egy gombnyomásra hazahívod, anélkül hogy telefonálnod kellene.">Draw a zone around the playground and get notified immediately if they leave. One button brings them home — no phone call needed.</p>
+          <a href="#" class="who-card-cta" data-en="Learn more →" data-hu="Tudj meg többet →">Learn more →</a>
         </div>
       </div>
-      <div class="who-card fade-up">
-        <div class="who-img-placeholder">👴</div>
-        <div class="who-body">
-          <h3>Idős hozzátartozók</h3>
-          <p>Demencia, Alzheimer, vagy csak a biztonság kedvéért. Légy ott gondolatban, ha fizikailag nem tudsz — valós idejű helymeghatározással és azonnali riasztással.</p>
+      <div class="who-card fade-up fade-up-delay-2">
+        <img src="https://images.pexels.com/photos/20394716/pexels-photo-20394716.jpeg?auto=compress&cs=tinysrgb&w=800&h=500&fit=crop" alt="Elderly man walking" class="who-card-img" loading="lazy"/>
+        <div class="who-card-body">
+          <span class="who-card-tag" data-en="Elderly relatives" data-hu="Idős hozzátartozók">Elderly relatives</span>
+          <h3 data-en="Peace of mind for both" data-hu="Nyugalom mindkét félnek">Peace of mind for both</h3>
+          <p data-en="Dementia, Alzheimer's, or just for safety. Be there in spirit when you can't be physically — with real-time tracking and instant alerts." data-hu="Demencia, Alzheimer, vagy csak a biztonság kedvéért. Légy ott gondolatban, ha fizikailag nem tudsz — valós idejű helymeghatározással és azonnali riasztással.">Dementia, Alzheimer's, or just for safety. Be there in spirit when you can't be physically — with real-time tracking and instant alerts.</p>
+          <a href="#" class="who-card-cta" data-en="Learn more →" data-hu="Tudj meg többet →">Learn more →</a>
         </div>
       </div>
-      <div class="who-card fade-up">
-        <div class="who-img-placeholder">🐕</div>
-        <div class="who-body">
-          <h3>Kisállatok</h3>
-          <p>Kedvenceink néha nem ismernek határokat — egy felugrott kerítés, egy kinyílt kapu, és már nem tudod hol van. Beepy valós időben mutatja hol jár, és azonnal riaszt ha átlépi a zónát, mielőtt még messzire ér.</p>
+      <div class="who-card fade-up fade-up-delay-3">
+        <img src="https://images.pexels.com/photos/32234776/pexels-photo-32234776.jpeg?auto=compress&cs=tinysrgb&w=800&h=500&fit=crop" alt="Dog running in field" class="who-card-img" loading="lazy"/>
+        <div class="who-card-body">
+          <span class="who-card-tag" data-en="Pets" data-hu="Kisállatok">Pets</span>
+          <h3 data-en="Because they roam free" data-hu="Mert a kedvenceink is kalandoznak">Because they roam free</h3>
+          <p data-en="Our pets sometimes don't know their limits — a jumped fence, an open gate, and suddenly you don't know where they are. Beepy shows their location in real time and alerts you the moment they cross the boundary." data-hu="Kedvenceink néha nem ismernek határokat — egy felugrott kerítés, egy kinyílt kapu, és már nem tudod hol van. Beepy valós időben mutatja hol jár, és azonnal riaszt ha átlépi a kijelölt zónát.">Our pets sometimes don't know their limits — a jumped fence, an open gate, and suddenly you don't know where they are. Beepy shows their location in real time and alerts you the moment they cross the boundary.</p>
+          <a href="#" class="who-card-cta" data-en="Learn more →" data-hu="Tudj meg többet →">Learn more →</a>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="how-section">
+<div class="divider"></div>
+
+<section class="how-section" id="how">
   <div class="section-inner">
-    <p class="section-tag fade-up">Hogyan működik</p>
-    <h2 class="section-title fade-up">Három lépés,<br>és már véd is.</h2>
-    <div class="how-steps">
-      <div class="how-step fade-up">
+    <span class="section-tag fade-up" data-en="How it works" data-hu="Hogyan működik">How it works</span>
+    <h2 class="section-title fade-up" data-en="Three steps,<br>and you're protected." data-hu="Három lépés,<br>és már véd is.">Three steps,<br>and you're protected.</h2>
+    <div class="how-steps fade-up">
+      <div class="how-step">
         <div class="step-num">1</div>
-        <h3>Rendeld meg a trackert</h3>
-        <p>Egy apró, vízálló eszköz. Felakasztod a nyakba, belevarrhatod a ruhába, vagy a kutya nyakörvre csípteted.</p>
+        <h3 data-en="Order the tracker" data-hu="Rendeld meg a trackert">Order the tracker</h3>
+        <p data-en="A tiny, waterproof device. Clip it to a collar, sew it into clothing, or attach it to a backpack." data-hu="Egy apró, vízálló eszköz. Felakasztható a nyakba, belevarrható a ruhába, vagy a kutya nyakörvre csíptethető.">A tiny, waterproof device. Clip it to a collar, sew it into clothing, or attach it to a backpack.</p>
       </div>
-      <div class="how-step fade-up">
+      <div class="how-step">
         <div class="step-num">2</div>
-        <h3>Rajzold meg a zónát</h3>
-        <p>Az appban ujjal rajzolod körbe a játszóteret, az udvart vagy az iskolát. Pontosan az, amit akarsz — nem kör, nem téglalap.</p>
+        <h3 data-en="Draw your zone" data-hu="Rajzold meg a zónát">Draw your zone</h3>
+        <p data-en="In the app, draw any shape around the playground, yard, or school. Not a circle, not a rectangle — exactly what you want." data-hu="Az appban ujjal rajzolod körbe a játszóteret, az udvart, vagy az iskolát. Nem kör, nem téglalap — pontosan az, amit akarsz.">In the app, draw any shape around the playground, yard, or school. Not a circle, not a rectangle — exactly what you want.</p>
       </div>
-      <div class="how-step fade-up">
+      <div class="how-step">
         <div class="step-num">3</div>
-        <h3>Élj nyugodtan</h3>
-        <p>Ha kilép a zónából, azonnal értesítünk. Ha haza kell hívni, egy gomb és a trackeren megszólal a hangjelzés.</p>
+        <h3 data-en="Live your life" data-hu="Élj nyugodtan">Live your life</h3>
+        <p data-en="If they leave the zone, we notify you instantly. If you want to call them home, one button triggers an alert on the tracker." data-hu="Ha kilép a zónából, azonnal értesítünk. Ha haza kell hívni, egy gomb és a trackeren megszólal a jelzés.">If they leave the zone, we notify you instantly. If you want to call them home, one button triggers an alert on the tracker.</p>
       </div>
     </div>
   </div>
 </section>
 
-<section class="features-section" id="funkciok">
+<div class="divider"></div>
+
+<section class="features-section">
   <div class="section-inner">
-    <p class="section-tag fade-up">Funkciók</p>
-    <h2 class="section-title fade-up">Minden, ami kell.<br>Semmi felesleg.</h2>
+    <span class="section-tag fade-up" data-en="Features" data-hu="Funkciók">Features</span>
+    <h2 class="section-title fade-up" data-en="Everything you need.<br>Nothing you don't." data-hu="Minden, ami kell.<br>Semmi felesleg.">Everything you need.<br>Nothing you don't.</h2>
     <div class="features-grid fade-up">
-      <div class="feature-item">
-        <div class="feature-icon-wrap">🗺️</div>
-        <h3>Valós idejű térkép</h3>
-        <p>Látod pontosan hol van, ahogy mozog — percenként frissítve, bárhonnan elérhető.</p>
-      </div>
-      <div class="feature-item">
-        <div class="feature-icon-wrap">✏️</div>
-        <h3>Szabadkézes zónák</h3>
-        <p>Rajzolj bármilyen formájú területet — játszótér, utca, egész negyed. Pontosan ott ahol kell.</p>
-      </div>
-      <div class="feature-item">
-        <div class="feature-icon-wrap">🔔</div>
-        <h3>Azonnali riasztás</h3>
-        <p>Kilép a zónából? Azonnal értesítünk push üzenetben, SMS-ben vagy e-mailben.</p>
-      </div>
-      <div class="feature-item">
-        <div class="feature-icon-wrap">📣</div>
-        <h3>"Gyere haza" gomb</h3>
-        <p>Egy gombnyomás és a trackeren megszólal a hangjelzés — telefonálás és aggodalom nélkül.</p>
-      </div>
-      <div class="feature-item">
-        <div class="feature-icon-wrap">🔋</div>
-        <h3>Hetek üzemidő</h3>
-        <p>Okos alvó mód — csak akkor pingel, amikor te elindítod. 2–4 hét egy töltéssel.</p>
-      </div>
-      <div class="feature-item">
-        <div class="feature-icon-wrap">💧</div>
-        <h3>IP67 vízállóság</h3>
-        <p>Eső, pocsolya, fürdő — a tracker bírja. A gyerek is, a kutya is.</p>
-      </div>
+      <div class="feature-item"><div class="feature-icon-wrap">🗺️</div><div><h3 data-en="Real-time map" data-hu="Valós idejű térkép">Real-time map</h3><p data-en="See exactly where they are as they move — updated every minute, from anywhere." data-hu="Látod pontosan hol van, ahogy mozog — percenként frissítve, bárhonnan.">See exactly where they are as they move — updated every minute, from anywhere.</p></div></div>
+      <div class="feature-item"><div class="feature-icon-wrap">✏️</div><div><h3 data-en="Freehand zones" data-hu="Szabadkézes zónák">Freehand zones</h3><p data-en="Draw any shape geofence. Playground, street, whole neighbourhood." data-hu="Rajzolj bármilyen formájú geofence-t. Játszótér, utca, egész negyed.">Draw any shape geofence. Playground, street, whole neighbourhood.</p></div></div>
+      <div class="feature-item"><div class="feature-icon-wrap">🔔</div><div><h3 data-en="Instant alerts" data-hu="Azonnali riasztás">Instant alerts</h3><p data-en="Left the zone? We notify you instantly via push, SMS, or email." data-hu="Kilép a zónából? Azonnal értesítünk push üzenetben, SMS-en vagy e-mailen.">Left the zone? We notify you instantly via push, SMS, or email.</p></div></div>
+      <div class="feature-item"><div class="feature-icon-wrap">📣</div><div><h3 data-en='"Come home" button' data-hu='"Gyere haza" gomb'>"Come home" button</h3><p data-en="One tap and the tracker sounds an alert. No phone call needed." data-hu="Egy gombnyomás és a trackeren megszólal a jelzés. Telefonálás nélkül.">One tap and the tracker sounds an alert. No phone call needed.</p></div></div>
+      <div class="feature-item"><div class="feature-icon-wrap">🔋</div><div><h3 data-en="Weeks of battery" data-hu="Hetek üzemidő">Weeks of battery</h3><p data-en="Smart sleep mode — only pings when you start tracking. No need to charge every night." data-hu="Okos alvó mód — csak akkor pingel, amikor te elindítod a követést.">Smart sleep mode — only pings when you start tracking. No need to charge every night.</p></div></div>
+      <div class="feature-item"><div class="feature-icon-wrap">💧</div><div><h3 data-en="IP67 waterproof" data-hu="IP67 vízállóság">IP67 waterproof</h3><p data-en="Rain, puddles, baths — the tracker handles it. So do kids and dogs." data-hu="Eső, pocsolya, fürdő — a tracker bírja. A gyerek is, a kutya is.">Rain, puddles, baths — the tracker handles it. So do kids and dogs.</p></div></div>
     </div>
   </div>
 </section>
 
-<section class="pricing-section" id="arak">
+<div class="divider"></div>
+
+<section class="pricing-section" id="pricing">
   <div class="section-inner">
-    <p class="section-tag fade-up">Árak</p>
-    <h2 class="section-title fade-up">Egyszerű, tiszta árazás.</h2>
-    <p class="section-sub fade-up">Nincs rejtett díj, nincs meglepetés. A tracker egyszeri vásárlás — az app havi vagy éves előfizetéssel érhető el.</p>
+    <div style="max-width:560px;">
+      <span class="section-tag fade-up" data-en="Pricing" data-hu="Árak">Pricing</span>
+      <h2 class="section-title fade-up" data-en="Simple, transparent pricing." data-hu="Egyszerű, tiszta árazás.">Simple, transparent pricing.</h2>
+      <p class="section-sub fade-up" data-en="No hidden fees, no surprises. The tracker is a one-time purchase — the app costs less than a coffee per month." data-hu="Nincs rejtett díj, nincs meglepetés. A tracker egyszeri vásárlás — az app előfizetése annyiba kerül, mint egy kávé havonta.">No hidden fees, no surprises. The tracker is a one-time purchase — the app costs less than a coffee per month.</p>
+    </div>
     <div class="pricing-grid fade-up">
       <div class="pricing-card">
-        <div class="pricing-name">Alap</div>
-        <div class="pricing-price">3 <span>EUR / hó</span></div>
-        <div class="pricing-annual">Éves csomagban: 25 EUR / év</div>
-        <p class="pricing-desc">Egy eszközre. Éves előfizetéssel több mint 2 hónap ajándékba jár.</p>
+        <div class="pricing-name" data-en="Basic" data-hu="Alap">Basic</div>
+        <div class="pricing-price"><sup>€</sup>3 <span>/ <span data-en="mo" data-hu="hó">mo</span></span></div>
+        <div class="pricing-annual" data-en="Annual plan: €25 / year" data-hu="Éves csomagban: 25 EUR / év">Annual plan: €25 / year</div>
+        <p class="pricing-desc" data-en="One device. All core features, unlimited geofence zones." data-hu="Egy eszközre. Minden alapfunkcióval, korlátlan geofence zónával.">One device. All core features, unlimited geofence zones.</p>
         <ul class="pricing-features">
-          <li>Valós idejű térkép</li>
-          <li>Szabadkézes geofence zónák</li>
-          <li>"Gyere haza" hangjelzés</li>
-          <li>Push értesítés</li>
-          <li>7 napos útvonal előzmény</li>
+          <li><div class="pricing-check"></div><span data-en="Real-time map" data-hu="Valós idejű térkép">Real-time map</span></li>
+          <li><div class="pricing-check"></div><span data-en="Freehand geofence zones" data-hu="Szabadkézes geofence zónák">Freehand geofence zones</span></li>
+          <li><div class="pricing-check"></div><span data-en="Push / SMS / email alerts" data-hu="Push / SMS / email riasztás">Push / SMS / email alerts</span></li>
+          <li><div class="pricing-check"></div><span data-en='"Come home" alert' data-hu='"Gyere haza" hangjelzés'>"Come home" alert</span></li>
+          <li><div class="pricing-check"></div><span data-en="7-day route history" data-hu="7 napos útvonal előzmény">7-day route history</span></li>
         </ul>
       </div>
       <div class="pricing-card featured">
-        <div class="pricing-badge">Legkedveltebb</div>
+        <div class="pricing-badge" data-en="Most popular" data-hu="Legkedveltebb">Most popular</div>
         <div class="pricing-name">Family</div>
-        <div class="pricing-price">2,40 <span>EUR / eszköz / hó</span></div>
-        <div class="pricing-annual">Két eszközre éves csomag: 40 EUR / év</div>
-        <p class="pricing-desc">Korlátlan eszközszám, 20% kedvezménnyel eszközönként. Két eszköz esetén havi 4,80 EUR — éves csomagban mindössze 40 EUR, szemben a havi fizetéssel járó 57,60 EUR-val.</p>
+        <div class="pricing-price"><sup>€</sup>2<span style="font-size:1.4rem;font-family:var(--font-display);font-weight:700;">,40</span> <span>/ <span data-en="device / mo" data-hu="eszköz / hó">device / mo</span></span></div>
+        <div class="pricing-annual" data-en="2 devices annually: €40 — save 30%" data-hu="2 eszközre évente: 40 EUR — 30% megtakarítás">2 devices annually: €40 — save 30%</div>
+        <p class="pricing-desc" data-en="Unlimited devices — 20% off per device. The more devices, the bigger the saving." data-hu="Korlátlan eszközre — minden eszköz után 20% kedvezmény. Minél több eszköz, annál nagyobb a megtakarítás.">Unlimited devices — 20% off per device. The more devices, the bigger the saving.</p>
         <ul class="pricing-features">
-          <li>Minden alap funkció</li>
-          <li>Korlátlan eszközszám</li>
-          <li>20% kedvezmény eszközönként</li>
-          <li>Korlátlan geofence zóna</li>
-          <li>SMS + e-mail riasztás</li>
-          <li>30 napos útvonal előzmény</li>
+          <li><div class="pricing-check"></div><span data-en="Everything in Basic" data-hu="Minden alap funkció">Everything in Basic</span></li>
+          <li><div class="pricing-check"></div><span data-en="Unlimited devices" data-hu="Korlátlan eszközszám">Unlimited devices</span></li>
+          <li><div class="pricing-check"></div><span data-en="20% discount per device" data-hu="20% kedvezmény eszközönként">20% discount per device</span></li>
+          <li><div class="pricing-check"></div><span data-en="30-day route history" data-hu="30 napos útvonal előzmény">30-day route history</span></li>
+          <li><div class="pricing-check"></div><span data-en="Route playback" data-hu="Útvonal visszajátszás">Route playback</span></li>
         </ul>
       </div>
     </div>
-    <p class="fade-up" style="margin-top:1.5rem;color:var(--text-soft);font-size:.82rem;">+ tracker eszköz egyszeri ár · SIM kártya beleértve · Nincs hosszú távú szerződés</p>
+    <p class="pricing-note fade-up" data-en="+ Tracker device one-time price · SIM card for 10 years included · No long-term contract · Cancel anytime" data-hu="+ Tracker eszköz egyszeri ára · SIM kártya 10 évre beleértve · Nincs hosszú távú szerződés · Bármikor lemondható">+ Tracker device one-time price · SIM card for 10 years included · No long-term contract · Cancel anytime</p>
   </div>
 </section>
 
+<div class="divider"></div>
+
 <section class="trust-section">
-  <div class="section-inner">
+  <div class="section-inner" style="text-align:center;">
+    <span class="section-tag fade-up" data-en="Why Beepy" data-hu="Miért Beepy">Why Beepy</span>
     <div class="trust-grid fade-up">
-      <div class="trust-item"><div class="trust-num">2–4 hét</div><p>Üzemidő egy töltéssel, okos alvó móddal</p></div>
-      <div class="trust-item"><div class="trust-num">4 éves+</div><p>Kortól függetlenül felrakható, kicsi és könnyű</p></div>
-      <div class="trust-item"><div class="trust-num">170+</div><p>Ország ahol az eszköz kapcsolódni tud</p></div>
-      <div class="trust-item"><div class="trust-num">€12</div><p>SIM kártya ára 10 évre — nincs havi díj az eszközön</p></div>
+      <div class="trust-item"><div class="trust-num">2–4 <span style="font-size:1.5rem" data-en="wks" data-hu="hét">wks</span></div><p data-en="Battery life on a single charge with smart sleep mode" data-hu="Üzemidő egy töltéssel, okos alvó móddal">Battery life on a single charge with smart sleep mode</p></div>
+      <div class="trust-item"><div class="trust-num">4+</div><p data-en="Years old — wearable from toddler age" data-hu="Éves kortól felrakható, könnyű és apró">Years old — wearable from toddler age</p></div>
+      <div class="trust-item"><div class="trust-num">170+</div><p data-en="Countries where the device can connect" data-hu="Ország ahol az eszköz kapcsolódni tud">Countries where the device can connect</p></div>
+      <div class="trust-item"><div class="trust-num">€12</div><p data-en="SIM card for 10 years — no monthly fee on the device" data-hu="SIM kártya ára 10 évre — nincs havi díj az eszközön">SIM card for 10 years — no monthly fee on the device</p></div>
     </div>
   </div>
 </section>
@@ -353,14 +417,14 @@ footer { background: var(--navy); border-top: 1px solid rgba(255,255,255,.08); p
 <section class="cta-section">
   <div class="section-inner">
     <div class="cta-box fade-up">
-      <h2>Legyél az elsők között.</h2>
-      <p>Az első 100 feliratkozó <strong>50% kedvezményt</strong> kap az első három hónapra — és exkluzív béta hozzáférést a launch előtt.</p>
-      <div class="waitlist-wrap" style="margin:0 auto;max-width:400px;">
-        <div class="waitlist-row">
-          <input type="email" class="waitlist-input" id="email-input-2" placeholder="email@cimed.hu" autocomplete="email"/>
-          <button class="waitlist-btn" onclick="handleSignup2()">Csatlakozom</button>
+      <h2 data-en="Be among the first." data-hu="Legyél az elsők között.">Be among the first.</h2>
+      <p data-en="The first 100 subscribers get <strong>50% off for the first three months</strong> — and exclusive beta access before launch." data-hu="Az első 100 feliratkozó <strong>50% kedvezményt</strong> kap az első három hónapra — és exkluzív béta hozzáférést a launch előtt.">The first 100 subscribers get <strong>50% off for the first three months</strong> — and exclusive beta access before launch.</p>
+      <div class="waitlist-wrap" style="margin:0 auto;">
+        <div class="waitlist-form">
+          <input type="email" class="waitlist-input" id="email-input-2" placeholder="your@email.com" autocomplete="email"/>
+          <button class="waitlist-btn" onclick="handleSignup2()" data-en="Join now" data-hu="Csatlakozom">Join now</button>
         </div>
-        <div class="success-msg" id="success-msg-2"></div>
+        <div class="success-msg" id="success-msg-2" data-en="✓ You're in! We'll notify you at launch." data-hu="✓ Feliratkoztál! Értesítünk az induláskor.">✓ You're in! We'll notify you at launch.</div>
       </div>
     </div>
   </div>
@@ -368,33 +432,68 @@ footer { background: var(--navy); border-top: 1px solid rgba(255,255,255,.08); p
 
 <footer>
   <div class="footer-inner">
-    <span class="footer-logo">Beepy</span>
+    <a href="#" class="footer-logo">Beepy</a>
     <span>© 2025 Beepy · <a href="mailto:hello@getbeepy.com">hello@getbeepy.com</a></span>
-    <span><a href="#">Adatvédelem</a> &nbsp;·&nbsp; <a href="#">Feltételek</a> &nbsp;·&nbsp; <a href="#">Kapcsolat</a></span>
+    <div class="footer-links">
+      <a href="#" data-en="Privacy" data-hu="Adatvédelem">Privacy</a>
+      <a href="#" data-en="Terms" data-hu="Feltételek">Terms</a>
+      <a href="#" data-en="Contact" data-hu="Kapcsolat">Contact</a>
+    </div>
   </div>
 </footer>
 
 <script>
+let currentLang = 'en';
 let count = 247;
-function ve(e){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);}
-function handleSignup(){
-  const i=document.getElementById('email-input');
-  if(!ve(i.value.trim())){i.style.borderColor='#e57373';setTimeout(()=>i.style.borderColor='',1500);return;}
+
+function setLang(lang) {
+  currentLang = lang;
+  document.querySelectorAll('[data-en]').forEach(el => {
+    const text = el.getAttribute('data-' + lang);
+    if (text) el.innerHTML = text;
+  });
+  document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+  document.querySelector('.lang-btn[onclick="setLang(\'' + lang + '\')"]').classList.add('active');
+  document.getElementById('email-input').placeholder = lang === 'hu' ? 'email@cimed.hu' : 'your@email.com';
+  document.getElementById('email-input-2').placeholder = lang === 'hu' ? 'email@cimed.hu' : 'your@email.com';
+  document.documentElement.lang = lang;
+  localStorage.setItem('beepy-lang', lang);
+}
+
+const savedLang = localStorage.getItem('beepy-lang') || 'en';
+if (savedLang !== 'en') setLang(savedLang);
+
+function validateEmail(e) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e); }
+
+function handleSignup() {
+  const input = document.getElementById('email-input');
+  if (!validateEmail(input.value.trim())) { input.style.borderColor='#e57373'; setTimeout(()=>input.style.borderColor='',1500); return; }
   count++;
-  i.closest('.waitlist-row').style.display='none';
-  const m=document.getElementById('success-msg');m.textContent='✓ Feliratkoztál! Értesítünk az induláskor.';m.style.display='block';
-  document.getElementById('counter').innerHTML='Már <strong>'+count+'</strong> ember csatlakozott — köszönjük!';
+  input.closest('.waitlist-form').style.display = 'none';
+  const msg = document.getElementById('success-msg');
+  msg.innerHTML = msg.getAttribute('data-' + currentLang);
+  msg.style.display = 'block';
+  document.getElementById('counter').innerHTML = currentLang === 'hu'
+    ? 'Már <strong>' + count + '</strong> ember vár — köszönjük!'
+    : 'Already <strong>' + count + '</strong> people waiting — thank you!';
 }
-function handleSignup2(){
-  const i=document.getElementById('email-input-2');
-  if(!ve(i.value.trim())){i.style.borderColor='#e57373';setTimeout(()=>i.style.borderColor='',1500);return;}
-  i.closest('.waitlist-row').style.display='none';
-  const m=document.getElementById('success-msg-2');m.textContent='✓ Feliratkoztál! Értesítünk az induláskor.';m.style.display='block';
+
+function handleSignup2() {
+  const input = document.getElementById('email-input-2');
+  if (!validateEmail(input.value.trim())) { input.style.borderColor='#e57373'; setTimeout(()=>input.style.borderColor='',1500); return; }
+  input.closest('.waitlist-form').style.display = 'none';
+  const msg = document.getElementById('success-msg-2');
+  msg.innerHTML = msg.getAttribute('data-' + currentLang);
+  msg.style.display = 'block';
 }
-document.getElementById('email-input').addEventListener('keydown',e=>{if(e.key==='Enter')handleSignup();});
-document.getElementById('email-input-2').addEventListener('keydown',e=>{if(e.key==='Enter')handleSignup2();});
-const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});},{threshold:.1});
-document.querySelectorAll('.fade-up').forEach(el=>obs.observe(el));
+
+document.getElementById('email-input').addEventListener('keydown', e => { if(e.key==='Enter') handleSignup(); });
+document.getElementById('email-input-2').addEventListener('keydown', e => { if(e.key==='Enter') handleSignup2(); });
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => { if(entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); } });
+}, { threshold: 0.08 });
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
 </script>
 </body>
 </html>
