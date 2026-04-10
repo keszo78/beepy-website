@@ -494,6 +494,85 @@ const observer = new IntersectionObserver(entries => {
   entries.forEach(entry => { if(entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); } });
 }, { threshold: 0.08 });
 document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
-</script>
+</<script>
+let currentLang = 'en';
+const API = 'https://api.getbeepy.com/api/waitlist';
+
+function setLang(lang) {
+  currentLang = lang;
+  document.querySelectorAll('[data-en]').forEach(el => {
+    const text = el.getAttribute('data-' + lang);
+    if (text) el.innerHTML = text;
+  });
+  document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+  document.querySelector('.lang-btn[onclick="setLang(\'' + lang + '\')"]').classList.add('active');
+  document.getElementById('email-input').placeholder = lang === 'hu' ? 'email@cimed.hu' : 'your@email.com';
+  document.getElementById('email-input-2').placeholder = lang === 'hu' ? 'email@cimed.hu' : 'your@email.com';
+  document.documentElement.lang = lang;
+  localStorage.setItem('beepy-lang', lang);
+}
+
+const savedLang = localStorage.getItem('beepy-lang') || 'en';
+if (savedLang !== 'en') setLang(savedLang);
+
+function validateEmail(e) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e); }
+
+async function submitEmail(email, successMsgId, formEl) {
+  try {
+    const res = await fetch(API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, lang: currentLang, source: 'landing' })
+    });
+    const data = await res.json();
+
+    if (res.status === 201 || res.status === 409) {
+      formEl.style.display = 'none';
+      const msg = document.getElementById(successMsgId);
+      msg.innerHTML = msg.getAttribute('data-' + currentLang);
+      msg.style.display = 'block';
+      if (res.status === 201) loadCount();
+    }
+  } catch (err) {
+    console.error('Signup error:', err);
+  }
+}
+
+function handleSignup() {
+  const input = document.getElementById('email-input');
+  if (!validateEmail(input.value.trim())) { input.style.borderColor='#e57373'; setTimeout(()=>input.style.borderColor='',1500); return; }
+  submitEmail(input.value.trim(), 'success-msg', input.closest('.waitlist-form'));
+}
+
+function handleSignup2() {
+  const input = document.getElementById('email-input-2');
+  if (!validateEmail(input.value.trim())) { input.style.borderColor='#e57373'; setTimeout(()=>input.style.borderColor='',1500); return; }
+  submitEmail(input.value.trim(), 'success-msg-2', input.closest('.waitlist-form'));
+}
+
+async function loadCount() {
+  try {
+    const res = await fetch('https://api.getbeepy.com/api/waitlist/count');
+    const data = await res.json();
+    const total = data.count + 247;
+    const counter = document.getElementById('counter');
+    if (counter) {
+      counter.innerHTML = currentLang === 'hu'
+        ? 'Már <strong>' + total + '</strong> ember vár — legyél te a következő'
+        : 'Already <strong>' + total + '</strong> people waiting — join them';
+    }
+  } catch (e) {}
+}
+
+loadCount();
+
+document.getElementById('email-input').addEventListener('keydown', e => { if(e.key==='Enter') handleSignup(); });
+document.getElementById('email-input-2').addEventListener('keydown', e => { if(e.key==='Enter') handleSignup2(); });
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => { if(entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); } });
+}, { threshold: 0.08 });
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>>
 </body>
 </html>
