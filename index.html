@@ -444,58 +444,6 @@ footer a:hover { color: var(--blue-light); }
 
 <script>
 let currentLang = 'en';
-let count = 247;
-
-function setLang(lang) {
-  currentLang = lang;
-  document.querySelectorAll('[data-en]').forEach(el => {
-    const text = el.getAttribute('data-' + lang);
-    if (text) el.innerHTML = text;
-  });
-  document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
-  document.querySelector('.lang-btn[onclick="setLang(\'' + lang + '\')"]').classList.add('active');
-  document.getElementById('email-input').placeholder = lang === 'hu' ? 'email@cimed.hu' : 'your@email.com';
-  document.getElementById('email-input-2').placeholder = lang === 'hu' ? 'email@cimed.hu' : 'your@email.com';
-  document.documentElement.lang = lang;
-  localStorage.setItem('beepy-lang', lang);
-}
-
-const savedLang = localStorage.getItem('beepy-lang') || 'en';
-if (savedLang !== 'en') setLang(savedLang);
-
-function validateEmail(e) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e); }
-
-function handleSignup() {
-  const input = document.getElementById('email-input');
-  if (!validateEmail(input.value.trim())) { input.style.borderColor='#e57373'; setTimeout(()=>input.style.borderColor='',1500); return; }
-  count++;
-  input.closest('.waitlist-form').style.display = 'none';
-  const msg = document.getElementById('success-msg');
-  msg.innerHTML = msg.getAttribute('data-' + currentLang);
-  msg.style.display = 'block';
-  document.getElementById('counter').innerHTML = currentLang === 'hu'
-    ? 'Már <strong>' + count + '</strong> ember vár — köszönjük!'
-    : 'Already <strong>' + count + '</strong> people waiting — thank you!';
-}
-
-function handleSignup2() {
-  const input = document.getElementById('email-input-2');
-  if (!validateEmail(input.value.trim())) { input.style.borderColor='#e57373'; setTimeout(()=>input.style.borderColor='',1500); return; }
-  input.closest('.waitlist-form').style.display = 'none';
-  const msg = document.getElementById('success-msg-2');
-  msg.innerHTML = msg.getAttribute('data-' + currentLang);
-  msg.style.display = 'block';
-}
-
-document.getElementById('email-input').addEventListener('keydown', e => { if(e.key==='Enter') handleSignup(); });
-document.getElementById('email-input-2').addEventListener('keydown', e => { if(e.key==='Enter') handleSignup2(); });
-
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(entry => { if(entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); } });
-}, { threshold: 0.08 });
-document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
-</<script>
-let currentLang = 'en';
 const API = 'https://api.getbeepy.com/api/waitlist';
 
 function setLang(lang) {
@@ -525,7 +473,6 @@ async function submitEmail(email, successMsgId, formEl) {
       body: JSON.stringify({ email, lang: currentLang, source: 'landing' })
     });
     const data = await res.json();
-
     if (res.status === 201 || res.status === 409) {
       formEl.style.display = 'none';
       const msg = document.getElementById(successMsgId);
@@ -573,6 +520,6 @@ const observer = new IntersectionObserver(entries => {
   entries.forEach(entry => { if(entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); } });
 }, { threshold: 0.08 });
 document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
-</script>>
+</script>
 </body>
 </html>
