@@ -380,7 +380,7 @@ footer a:hover { color: var(--blue-light); }
         <line x1="164" y1="110" x2="174" y2="126" stroke="#5b8fb9" stroke-width="5" stroke-linecap="round"/>
         <line x1="140" y1="131" x2="136" y2="146" stroke="#5b8fb9" stroke-width="5" stroke-linecap="round"/>
         <line x1="156" y1="131" x2="160" y2="146" stroke="#5b8fb9" stroke-width="5" stroke-linecap="round"/>
-        <text x="148" y="184" text-anchor="middle" class="ucm" fill="#4a7a9b" data-en="When are you picking me up?" data-hu="Mikor jössz értem?">When are you picking me up?</text>
+        <text x="148" y="184" text-anchor="middle" class="ucm" fill="#4a7a9b" data-en="Coming to pick me up?" data-hu="Mikor jössz értem?">Coming to pick me up?</text>
         <text x="148" y="197" text-anchor="middle" class="ucm" fill="#4a7a9b" data-en="Come back!" data-hu="Gyere vissza!">Come back!</text>
         <text x="148" y="211" text-anchor="middle" class="ucs" data-en="School or playground" data-hu="Iskola vagy játszótér">School or playground</text>
         <!-- idős -->
@@ -472,15 +472,15 @@ footer a:hover { color: var(--blue-light); }
     <div class="fade-up" style="display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:2rem; margin-top:2.5rem; align-items:start;">
 
       <!-- képrács -->
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; align-content:start;">
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
         <img src="./csipeszes_tarto1.png" alt="Clip mount" style="width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:14px;border:1px solid var(--cream-3);display:block;background:var(--cream-2);"/>
         <img src="./csipeszes_tarto2.png" alt="Clip mount on bag" style="width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:14px;border:1px solid var(--cream-3);display:block;background:var(--cream-2);"/>
         <img src="./nyakpant1.png" alt="Lanyard mount" style="width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:14px;border:1px solid var(--cream-3);display:block;background:var(--cream-2);"/>
         <img src="./nyakpant2.png" alt="Lanyard worn" style="width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:14px;border:1px solid var(--cream-3);display:block;background:var(--cream-2);"/>
       </div>
 
-      <!-- kártyák -->
-      <div style="display:flex;flex-direction:column;gap:10px;min-width:0;overflow:hidden;">
+      <!-- csak a két tartó kártya -->
+      <div style="display:flex;flex-direction:column;gap:10px;">
         <div style="background:var(--white);border:1px solid var(--cream-3);border-radius:14px;padding:16px 18px;box-shadow:var(--shadow-card);">
           <h3 style="font-family:var(--font-display);font-weight:600;font-size:1rem;margin-bottom:6px;" data-en="Belt / bag clip" data-hu="Csipeszes tartó">Belt / bag clip</h3>
           <p style="font-size:0.88rem;color:var(--ink-2);line-height:1.6;" data-en="Clips to belt, bag or backpack in seconds — no tools needed." data-hu="Másodpercek alatt felcsíptethető övre, táskára, hátizsákra.">Clips to belt, bag or backpack in seconds — no tools needed.</p>
@@ -499,39 +499,43 @@ footer a:hover { color: var(--blue-light); }
             <span style="font-size:11px;font-weight:500;padding:3px 10px;border-radius:999px;border:1px solid var(--cream-3);color:var(--ink-3);" data-en="Elderly" data-hu="Idősek">Elderly</span>
           </div>
         </div>
-
-        <!-- specs -->
-        <div style="background:#f0fdf7;border:1px solid #9ae6b4;border-radius:14px;padding:16px 18px;">
-          <h3 style="font-size:13px;font-weight:700;color:#276749;margin-bottom:12px;" data-en="Specs" data-hu="Műszaki adatok">Specs</h3>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 20px;">
-            <div style="font-size:12px;"><div style="color:#718096;" data-en="Size" data-hu="Méret">Size</div><div style="font-weight:600;color:#2c3341;">45×45×17 mm</div></div>
-            <div style="font-size:12px;"><div style="color:#718096;" data-en="Weight" data-hu="Tömeg">Weight</div><div style="font-weight:600;color:#2c3341;">33 g</div></div>
-            <div style="font-size:12px;"><div style="color:#718096;" data-en="Battery" data-hu="Akkumulátor">Battery</div><div style="font-weight:600;color:#2c3341;">650 mAh, ~4 days</div></div>
-            <div style="font-size:12px;"><div style="color:#718096;" data-en="Charging" data-hu="Töltés">Charging</div><div style="font-weight:600;color:#2c3341;">USB-C</div></div>
-            <div style="font-size:12px;"><div style="color:#718096;" data-en="Protection" data-hu="Védettség">Protection</div><div style="font-weight:600;color:#2c3341;">IP65</div></div>
-            <div style="font-size:12px;"><div style="color:#718096;" data-en="Temperature" data-hu="Hőmérséklet">Temperature</div><div style="font-weight:600;color:#2c3341;">−20→+60 °C</div></div>
-            <div style="font-size:12px;"><div style="color:#718096;" data-en="Network" data-hu="Hálózat">Network</div><div style="font-weight:600;color:#2c3341;">4G LTE Cat 1</div></div>
-            <div style="font-size:12px;"><div style="color:#718096;" data-en="Location" data-hu="Helymeghat.">Location</div><div style="font-weight:600;color:#2c3341;">GPS+WiFi+LBS</div></div>
-            <div style="font-size:12px;"><div style="color:#718096;">Bluetooth</div><div style="font-weight:600;color:#2c3341;">BLE 5.0</div></div>
-            <div style="font-size:12px;"><div style="color:#718096;" data-en="Audio" data-hu="Hang">Audio</div><div style="font-weight:600;color:#2c3341;" data-en="Two-way HD" data-hu="Kétirányú HD">Two-way HD</div></div>
-          </div>
-        </div>
-
-        <!-- videó -->
-        <div style="min-width:0;">
-          <a href="https://www.youtube.com/watch?v=aUWmvb4eDrY" target="_blank" rel="noopener"
-             style="display:block;width:100%;aspect-ratio:16/9;border-radius:14px;overflow:hidden;border:1px solid var(--cream-3);box-shadow:var(--shadow-card);text-decoration:none;background:#111;position:relative;">
-            <img src="https://img.youtube.com/vi/aUWmvb4eDrY/hqdefault.jpg" alt="Setup video"
-                 style="width:100%;height:100%;object-fit:cover;opacity:0.85;display:block;"/>
-            <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:52px;height:52px;background:rgba(255,255,255,0.95);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,0,0,0.3);">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M8 5.5L19 12L8 18.5V5.5Z" fill="#2c3341"/></svg>
-            </div>
-            <div style="position:absolute;bottom:8px;right:10px;background:#ff0000;border-radius:4px;padding:2px 6px;font-size:10px;font-weight:700;color:white;">YouTube</div>
-          </a>
-          <p style="font-size:11px;color:var(--ink-3);margin-top:6px;" data-en="Click to watch — How to attach the mounts" data-hu="Kattints a lejátszáshoz — Így egyszerű felszerelni">Click to watch — How to attach the mounts</p>
-        </div>
-
       </div>
+    </div>
+
+    <!-- Specs + Videó teljes szélességű sorban -->
+    <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:2rem;margin-top:1.5rem;">
+
+      <!-- videó bal -->
+      <div>
+        <a href="https://www.youtube.com/watch?v=aUWmvb4eDrY" target="_blank" rel="noopener"
+           style="display:block;width:100%;aspect-ratio:16/9;border-radius:14px;overflow:hidden;border:1px solid var(--cream-3);box-shadow:var(--shadow-card);text-decoration:none;background:#111;position:relative;">
+          <img src="https://img.youtube.com/vi/aUWmvb4eDrY/hqdefault.jpg" alt="Setup video"
+               style="width:100%;height:100%;object-fit:cover;opacity:0.85;display:block;"/>
+          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:52px;height:52px;background:rgba(255,255,255,0.95);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,0,0,0.3);">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M8 5.5L19 12L8 18.5V5.5Z" fill="#2c3341"/></svg>
+          </div>
+          <div style="position:absolute;bottom:8px;right:10px;background:#ff0000;border-radius:4px;padding:2px 6px;font-size:10px;font-weight:700;color:white;">YouTube</div>
+        </a>
+        <p style="font-size:11px;color:var(--ink-3);margin-top:6px;" data-en="Click to watch — How to attach the mounts" data-hu="Kattints a lejátszáshoz — Így egyszerű felszerelni">Click to watch — How to attach the mounts</p>
+      </div>
+
+      <!-- specs jobb -->
+      <div style="background:#f0fdf7;border:1px solid #9ae6b4;border-radius:14px;padding:16px 18px;align-self:start;">
+        <h3 style="font-size:13px;font-weight:700;color:#276749;margin-bottom:12px;" data-en="Specs" data-hu="Műszaki adatok">Specs</h3>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 20px;">
+          <div style="font-size:12px;"><div style="color:#718096;" data-en="Size" data-hu="Méret">Size</div><div style="font-weight:600;color:#2c3341;">45×45×17 mm</div></div>
+          <div style="font-size:12px;"><div style="color:#718096;" data-en="Weight" data-hu="Tömeg">Weight</div><div style="font-weight:600;color:#2c3341;">33 g</div></div>
+          <div style="font-size:12px;"><div style="color:#718096;" data-en="Battery" data-hu="Akkumulátor">Battery</div><div style="font-weight:600;color:#2c3341;">650 mAh, ~4 days</div></div>
+          <div style="font-size:12px;"><div style="color:#718096;" data-en="Charging" data-hu="Töltés">Charging</div><div style="font-weight:600;color:#2c3341;">USB-C</div></div>
+          <div style="font-size:12px;"><div style="color:#718096;" data-en="Protection" data-hu="Védettség">Protection</div><div style="font-weight:600;color:#2c3341;">IP65</div></div>
+          <div style="font-size:12px;"><div style="color:#718096;" data-en="Temperature" data-hu="Hőmérséklet">Temperature</div><div style="font-weight:600;color:#2c3341;">−20→+60 °C</div></div>
+          <div style="font-size:12px;"><div style="color:#718096;" data-en="Network" data-hu="Hálózat">Network</div><div style="font-weight:600;color:#2c3341;">4G LTE Cat 1</div></div>
+          <div style="font-size:12px;"><div style="color:#718096;" data-en="Location" data-hu="Helymeghat.">Location</div><div style="font-weight:600;color:#2c3341;">GPS+WiFi+LBS</div></div>
+          <div style="font-size:12px;"><div style="color:#718096;">Bluetooth</div><div style="font-weight:600;color:#2c3341;">BLE 5.0</div></div>
+          <div style="font-size:12px;"><div style="color:#718096;" data-en="Audio" data-hu="Hang">Audio</div><div style="font-weight:600;color:#2c3341;" data-en="Two-way HD" data-hu="Kétirányú HD">Two-way HD</div></div>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
