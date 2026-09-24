@@ -195,6 +195,17 @@ section { position: relative; }
 .pricing-check { width: 18px; height: 18px; min-width: 18px; border-radius: 50%; background: var(--blue-pale); border: 1.5px solid rgba(91,143,185,0.35); display: flex; align-items: center; justify-content: center; margin-top: 1px; }
 .pricing-check::after { content: ''; display: block; width: 9px; height: 6px; border-left: 1.5px solid var(--blue); border-bottom: 1.5px solid var(--blue); transform: rotate(-45deg) translateY(-1px); }
 .pricing-note { margin-top: 2rem; color: var(--ink-3); font-size: 0.85rem; line-height: 1.6; }
+.pricing-price .price-dec { font-size: 1.4rem; font-family: var(--font-display); font-weight: 700; }
+.pricing-tiers { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 1.4rem; padding-bottom: 1.4rem; border-bottom: 1px solid var(--cream-3); }
+.pricing-tiers li { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; font-size: 0.9rem; color: var(--ink-2); }
+.pricing-tiers .tier-label { display: flex; flex-direction: column; gap: 0.1rem; }
+.pricing-tiers li.is-active { color: var(--ink); font-weight: 600; }
+.pricing-tiers .tier-price { white-space: nowrap; text-align: right; }
+.pricing-tiers em { font-style: normal; font-weight: 400; font-size: 0.82rem; color: var(--ink-3); }
+.pricing-included { max-width: 900px; margin-top: 1.5rem; background: var(--white); border: 1.5px solid var(--cream-3); border-radius: var(--radius-xl); padding: 2rem 2.25rem; box-shadow: var(--shadow-card); }
+.pricing-included h3 { font-family: var(--font-display); font-weight: 600; font-size: 1.05rem; color: var(--ink); margin-bottom: 1.3rem; }
+.pricing-included ul { list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(235px, 1fr)); gap: 0.75rem 1.75rem; }
+.pricing-included li { font-size: 0.91rem; color: var(--ink-2); display: flex; align-items: flex-start; gap: 0.65rem; }
 
 /* TRUST */
 .trust-section { background: var(--white); }
@@ -577,41 +588,57 @@ footer a:hover { color: var(--blue-light); }
 
 <section class="pricing-section" id="pricing">
   <div class="section-inner">
-    <div style="max-width:560px;">
+    <div style="max-width:620px;">
       <span class="section-tag fade-up" data-en="Pricing" data-hu="Árak">Pricing</span>
       <h2 class="section-title fade-up" data-en="Simple, transparent pricing." data-hu="Egyszerű, tiszta árazás.">Simple, transparent pricing.</h2>
-      <p class="section-sub fade-up" data-en="No hidden fees, no surprises. The tracker is a one-time purchase — the app costs less than a coffee per month." data-hu="Nincs rejtett díj, nincs meglepetés. A tracker egyszeri vásárlás — az app előfizetése annyiba kerül, mint egy kávé havonta.">No hidden fees, no surprises. The tracker is a one-time purchase — the app costs less than a coffee per month.</p>
+      <p class="section-sub fade-up" data-en="The tracker is a one-time purchase — with the first year of connectivity already included. After that a connectivity subscription keeps it online: mobile data and voice minutes, for up to 3 devices. The app is free — while your connectivity is paid, you and your family have full access to it." data-hu="Az eszköz egyszeri vásárlás — az első év connectivity már benne van az árban. Utána a connectivity előfizetés tartja online: adatforgalom és beszélgetési percek, akár 3 eszközre. Az app ingyenes — amíg a connectivity elő van fizetve, neked és a családnak teljes hozzáférésetek van hozzá.">The tracker is a one-time purchase — with the first year of connectivity already included. After that a connectivity subscription keeps it online: mobile data and voice minutes, for up to 3 devices. The app is free — while your connectivity is paid, you and your family have full access to it.</p>
     </div>
     <div class="pricing-grid fade-up">
       <div class="pricing-card">
-        <div class="pricing-name" data-en="Basic" data-hu="Alap">Basic</div>
-        <div class="pricing-price"><sup>€</sup>3 <span>/ <span data-en="mo" data-hu="hó">mo</span></span></div>
-        <div class="pricing-annual" data-en="Annual plan: €25 / year" data-hu="Éves csomagban: 25 EUR / év">Annual plan: €25 / year</div>
-        <p class="pricing-desc" data-en="One device. All core features, unlimited geofence zones." data-hu="Egy eszközre. Minden alapfunkcióval, korlátlan geofence zónával.">One device. All core features, unlimited geofence zones.</p>
+        <div class="pricing-name" data-en="Hardware" data-hu="Eszköz">Hardware</div>
+        <div class="pricing-price"><sup>€</sup>99 <span><span data-en="one-time" data-hu="egyszeri">one-time</span></span></div>
+        <div class="pricing-annual" data-en="Year 1 connectivity + 20 min/mo included" data-hu="1. év mobilkapcsolat + 20 perc/hó az árban">Year 1 connectivity + 20 min/mo included</div>
+        <p class="pricing-desc" data-en="The Beepy tracker, ready to go out of the box. No separate SIM to buy, nothing to configure." data-hu="A Beepy tracker, dobozból azonnal használható. Nem kell külön SIM-et venni, és beállítani sem kell semmit.">The Beepy tracker, ready to go out of the box. No separate SIM to buy, nothing to configure.</p>
         <ul class="pricing-features">
-          <li><div class="pricing-check"></div><span data-en="Real-time map" data-hu="Valós idejű térkép">Real-time map</span></li>
-          <li><div class="pricing-check"></div><span data-en="Freehand geofence zones" data-hu="Szabadkézes geofence zónák">Freehand geofence zones</span></li>
-          <li><div class="pricing-check"></div><span data-en="Push / SMS / email alerts" data-hu="Push / SMS / email riasztás">Push / SMS / email alerts</span></li>
-          <li><div class="pricing-check"></div><span data-en='"Come home" alert' data-hu='"Gyere haza" hangjelzés'>"Come home" alert</span></li>
-          <li><div class="pricing-check"></div><span data-en="7-day route history" data-hu="7 napos útvonal előzmény">7-day route history</span></li>
+          <li><div class="pricing-check"></div><span data-en="First year of connectivity included" data-hu="Az első év connectivity az árban">First year of connectivity included</span></li>
+          <li><div class="pricing-check"></div><span data-en="20 voice minutes / month included" data-hu="20 perc beszélgetés / hó az árban">20 voice minutes / month included</span></li>
+          <li><div class="pricing-check"></div><span data-en="IP67 waterproof, 2–4 weeks of battery" data-hu="IP67 vízállóság, 2–4 hét üzemidő">IP67 waterproof, 2–4 weeks of battery</span></li>
+          <li><div class="pricing-check"></div><span data-en="Works in 170+ countries" data-hu="170+ országban működik">Works in 170+ countries</span></li>
         </ul>
       </div>
       <div class="pricing-card featured">
-        <div class="pricing-badge" data-en="Most popular" data-hu="Legkedveltebb">Most popular</div>
-        <div class="pricing-name">Family</div>
-        <div class="pricing-price"><sup>€</sup>2<span style="font-size:1.4rem;font-family:var(--font-display);font-weight:700;">,40</span> <span>/ <span data-en="device / mo" data-hu="eszköz / hó">device / mo</span></span></div>
-        <div class="pricing-annual" data-en="2 devices annually: €40 — save 30%" data-hu="2 eszközre évente: 40 EUR — 30% megtakarítás">2 devices annually: €40 — save 30%</div>
-        <p class="pricing-desc" data-en="Unlimited devices — 20% off per device. The more devices, the bigger the saving." data-hu="Korlátlan eszközre — minden eszköz után 20% kedvezmény. Minél több eszköz, annál nagyobb a megtakarítás.">Unlimited devices — 20% off per device. The more devices, the bigger the saving.</p>
+        <div class="pricing-name" data-en="Connectivity subscription" data-hu="Connectivity előfizetés">Connectivity subscription</div>
+        <div class="pricing-price"><sup>€</sup>6<span class="price-dec" data-en=".50" data-hu=",50">.50</span> <span>/ <span data-en="mo · 1 device" data-hu="hó · 1 eszköz">mo · 1 device</span></span></div>
+        <div class="pricing-annual" data-en="€78 billed yearly" data-hu="78 € éves számlázással">€78 billed yearly</div>
+        <p class="pricing-desc" data-en="From year two onwards. Add devices to the same plan — every extra device costs less than the one before it." data-hu="A második évtől. Bővítheted ugyanazt az előfizetést — minden további eszköz olcsóbb, mint az előző.">From year two onwards. Add devices to the same plan — the more devices, the lower the price per device.</p>
+        <ul class="pricing-tiers">
+          <li class="is-active"><span class="tier-label" data-en="1 device" data-hu="1 eszköz">1 device</span><span class="tier-price" data-en="€6.50 / mo <em>(€78 / yr)</em>" data-hu="6,50 € / hó <em>(78 € / év)</em>">€6.50 / mo <em>(€78 / yr)</em></span></li>
+          <li><span class="tier-label" data-en="2 devices<em>+€6 / mo for the 2nd</em>" data-hu="2 eszköz<em>+6 € / hó a 2. eszközért</em>">2 devices<em>+€6 / mo for the 2nd</em></span><span class="tier-price" data-en="€12.50 / mo <em>(€150 / yr)</em>" data-hu="12,50 € / hó <em>(150 € / év)</em>">€12.50 / mo <em>(€150 / yr)</em></span></li>
+          <li><span class="tier-label" data-en="3 devices<em>+€5.50 / mo for the 3rd</em>" data-hu="3 eszköz<em>+5,50 € / hó a 3. eszközért</em>">3 devices<em>+€5.50 / mo for the 3rd</em></span><span class="tier-price" data-en="€18 / mo <em>(€216 / yr)</em>" data-hu="18 € / hó <em>(216 € / év)</em>">€18 / mo <em>(€216 / yr)</em></span></li>
+        </ul>
         <ul class="pricing-features">
-          <li><div class="pricing-check"></div><span data-en="Everything in Basic" data-hu="Minden alap funkció">Everything in Basic</span></li>
-          <li><div class="pricing-check"></div><span data-en="Unlimited devices" data-hu="Korlátlan eszközszám">Unlimited devices</span></li>
-          <li><div class="pricing-check"></div><span data-en="20% discount per device" data-hu="20% kedvezmény eszközönként">20% discount per device</span></li>
-          <li><div class="pricing-check"></div><span data-en="30-day route history" data-hu="30 napos útvonal előzmény">30-day route history</span></li>
-          <li><div class="pricing-check"></div><span data-en="Route playback" data-hu="Útvonal visszajátszás">Route playback</span></li>
+          <li><div class="pricing-check"></div><span data-en="20 voice minutes / month per device" data-hu="20 perc beszélgetés / hó eszközönként">20 voice minutes / month per device</span></li>
+          <li><div class="pricing-check"></div><span data-en="Voice beyond that: €0.15 / min" data-hu="A kereten felül: 0,15 € / perc">Voice beyond that: €0.15 / min</span></li>
+          <li><div class="pricing-check"></div><span data-en="No long-term contract — cancel anytime" data-hu="Nincs hosszú távú szerződés — bármikor lemondható">No long-term contract — cancel anytime</span></li>
         </ul>
       </div>
     </div>
-    <p class="pricing-note fade-up" data-en="+ Tracker device one-time price · SIM card for 10 years included · No long-term contract · Cancel anytime" data-hu="+ Tracker eszköz egyszeri ára · SIM kártya 10 évre beleértve · Nincs hosszú távú szerződés · Bármikor lemondható">+ Tracker device one-time price · SIM card for 10 years included · No long-term contract · Cancel anytime</p>
+    <div class="pricing-included fade-up">
+      <h3 data-en="What your connectivity subscription includes" data-hu="Mit tartalmaz a connectivity előfizetés">What your connectivity subscription includes</h3>
+      <ul>
+        <li><div class="pricing-check"></div><span data-en="Full app access — the app itself is free" data-hu="Teljes hozzáférés az apphoz — az app maga ingyenes">Full app access — the app itself is free</span></li>
+        <li><div class="pricing-check"></div><span data-en="Two-way voice calls" data-hu="Kétirányú hanghívás">Two-way voice calls</span></li>
+        <li><div class="pricing-check"></div><span data-en="Live location" data-hu="Élő helyzet">Live location</span></li>
+        <li><div class="pricing-check"></div><span data-en="Location history — last 30 days" data-hu="Helyzet előzmény — utolsó 30 nap">Location history — last 30 days</span></li>
+        <li><div class="pricing-check"></div><span data-en="Family members shared — up to 5" data-hu="Megosztás családtagokkal — akár 5 fő">Family members shared — up to 5</span></li>
+        <li><div class="pricing-check"></div><span data-en="Devices per account — up to 3" data-hu="Eszköz fiókonként — akár 3 db">Devices per account — up to 3</span></li>
+        <li><div class="pricing-check"></div><span data-en="Geofence alerts" data-hu="Geofence riasztások">Geofence alerts</span></li>
+        <li><div class="pricing-check"></div><span data-en="Weekly summary" data-hu="Heti összefoglaló">Weekly summary</span></li>
+        <li><div class="pricing-check"></div><span data-en="Priority support (24h)" data-hu="Elsőbbségi ügyfélszolgálat (24 óra)">Priority support (24h)</span></li>
+        <li><div class="pricing-check"></div><span data-en="Hungarian app + support" data-hu="Magyar nyelvű app és ügyfélszolgálat">Hungarian app + support</span></li>
+      </ul>
+    </div>
+    <p class="pricing-note fade-up" data-en="€99 one-time device price includes year 1 of connectivity and 20 min/month of voice · Voice overage €0.15 / min · No long-term contract · Cancel anytime" data-hu="A 99 € egyszeri eszközár tartalmazza az 1. év mobilkapcsolatot és a havi 20 perc beszélgetést · Kereten felüli hívás: 0,15 € / perc · Nincs hosszú távú szerződés · Bármikor lemondható">€99 one-time device price includes year 1 of connectivity and 20 min/month of voice · Voice overage €0.15 / min · No long-term contract · Cancel anytime</p>
   </div>
 </section>
 
@@ -624,7 +651,7 @@ footer a:hover { color: var(--blue-light); }
       <div class="trust-item"><div class="trust-num">2–4 <span style="font-size:1.5rem" data-en="wks" data-hu="hét">wks</span></div><p data-en="Battery life on a single charge with smart sleep mode" data-hu="Üzemidő egy töltéssel, okos alvó móddal">Battery life on a single charge with smart sleep mode</p></div>
       <div class="trust-item"><div class="trust-num">4+</div><p data-en="Years old — wearable from toddler age" data-hu="Éves kortól felrakható, könnyű és apró">Years old — wearable from toddler age</p></div>
       <div class="trust-item"><div class="trust-num">170+</div><p data-en="Countries where the device can connect" data-hu="Ország ahol az eszköz kapcsolódni tud">Countries where the device can connect</p></div>
-      <div class="trust-item"><div class="trust-num">€12</div><p data-en="SIM card for 10 years — no monthly fee on the device" data-hu="SIM kártya ára 10 évre — nincs havi díj az eszközön">SIM card for 10 years — no monthly fee on the device</p></div>
+      <div class="trust-item"><div class="trust-num">20 <span style="font-size:1.5rem">min</span></div><p data-en="Two-way voice minutes every month, per device — included in the plan" data-hu="Beszélgetési perc havonta, eszközönként — az előfizetés része">Two-way voice minutes every month, per device — included in the plan</p></div>
     </div>
   </div>
 </section>
@@ -633,7 +660,7 @@ footer a:hover { color: var(--blue-light); }
   <div class="section-inner">
     <div class="cta-box fade-up">
       <h2 data-en="Be among the first." data-hu="Legyél az elsők között.">Be among the first.</h2>
-      <p data-en="The first 100 subscribers get <strong>50% off for the first three months</strong> — and exclusive beta access before launch." data-hu="Az első 100 feliratkozó <strong>50% kedvezményt</strong> kap az első három hónapra — és exkluzív béta hozzáférést a launch előtt.">The first 100 subscribers get <strong>50% off for the first three months</strong> — and exclusive beta access before launch.</p>
+      <p data-en="Join the waitlist and get <strong>exclusive beta access</strong> before launch." data-hu="Iratkozz fel a várólistára, és <strong>exkluzív béta hozzáférést</strong> kapsz a launch előtt.">Join the waitlist and get <strong>exclusive beta access</strong> before launch.</p>
       <div class="waitlist-wrap" style="margin:0 auto;">
         <div class="waitlist-form">
           <input type="email" class="waitlist-input" id="email-input-2" placeholder="your@email.com" autocomplete="email"/>
